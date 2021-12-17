@@ -1,0 +1,27 @@
+# obwogotom.github.io
+// @method addEventParent(obj: Evented): this
+	// Adds an event parent - an `Evented` that will receive propagated events
+	addEventParent: function (obj) {
+		this._eventParents = this._eventParents || {};
+		this._eventParents[stamp(obj)] = obj;
+		return this;
+	},
+
+	// @method removeEventParent(obj: Evented): this
+	// Removes an event parent, so it will stop receiving propagated events
+	removeEventParent: function (obj) {
+		if (this._eventParents) {
+			delete this._eventParents[stamp(obj)];
+		}
+		return this;
+	},
+
+	_propagateEvent: function (e) {
+		for (var id in this._eventParents) {
+			this._eventParents[id].fire(e.type, extend({
+				layer: e.target,
+				propagatedFrom: e.target
+			}, e), true);
+		}
+	}
+};

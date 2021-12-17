@@ -1,1 +1,0 @@
-# obwogotom.github.io
